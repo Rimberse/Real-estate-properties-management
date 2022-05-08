@@ -1,3 +1,9 @@
+/* CSS color variables */
+:root {
+  --main-page-fill-color: #2F2FA2;
+  --main-page-font-color: #553D67;
+}
+
 .App {
   text-align: center;
 }
@@ -42,11 +48,38 @@ ul {
 }
 
 .property {
-  margin: 25px 0;
+  margin: 50px 0;
 }
 
 img {
   object-fit: cover;
   width: 350px;
   height: 250px;
+}
+
+#pagination-bar {
+  display: flex;
+  justify-content: center;
+}
+
+.page-button {
+  background: none;
+	color: var(--main-page-font-color);
+	padding: 0;
+  margin: 0 7px;
+	font-size: 20px;
+  font-weight: bold;
+	cursor: pointer;
+	outline: inherit;
+  display:block;
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--main-page-fill-color);
+}
+
+/* Change style if the next page is loaded, fill button for active page */
+.active {
+  color: #fff;
+  background-color: var(--main-page-fill-color);
 }

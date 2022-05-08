@@ -19,6 +19,15 @@ const getMultiple = async (page = 1) => {
     }
 }
 
+const getAll = async () => {
+    const rows = await db.query(
+        `SELECT COUNT(*) AS count FROM properties`
+    );
+
+    return rows[0];
+}
+
 module.exports = {
-    getMultiple
+    getMultiple,
+    getAll
 }

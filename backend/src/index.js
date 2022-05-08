@@ -5,7 +5,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
-require('dotenv').config({path: "../.env" });
+require('dotenv').config({ path: "../.env" });
 const properties = require('./services/properties');
 
 // Logging requests 
@@ -13,11 +13,18 @@ const requestLogger = (request, response, next) => {
     console.log('Method:', request.method);
     console.log('Path:', request.path);
     console.log('Body:', request.body);
-    console.log('-------');
+    console.log('---------------------');
     next();
 };
 
 app.use(requestLogger);
+
+app.use((error, request, response, next) => {
+    const statusCode = error.statusCode || 500;
+    console.error(error.message, error.stack);
+    response.status(statusCode).json({ message: error.message });
+    return;
+});
 
 const realProperties = [
     {
@@ -72,9 +79,18 @@ app.get('/api/properties', async (request, response, next) => {
         response.json(await properties.getMultiple(request.query.page));
     } catch (error) {
         console.error(`Error while getting properties `, error.message);
-        next(err);
+        next(error);
     }
 });
+
+app.get('/api/properties/total', async (request, response, next) => {
+    try {
+        response.json(await properties.getAll());
+    } catch(error) {
+        console.log(`Error while getting total number of properties `, error.message);
+        next(error);
+    }
+})
 
 // sends a json response if no associate route is found e.g: (/something/somewhere)
 const unknownEndpoint = (request, response) => {

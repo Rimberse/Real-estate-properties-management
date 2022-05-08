@@ -1,8 +1,7 @@
 import axios from 'axios';
 const baseUrl = 'http://localhost:5000/api/properties';
 
-const getAll = () => {
-    const page = 2;
+const getAll = page => {
     const queryString = `?page=${page}`;
     const request = axios.get(baseUrl + queryString);
 
@@ -23,6 +22,14 @@ const getAll = () => {
     return request.then(response => response.data);
 };
 
-const propertyService = { getAll };
+const getCount = () => {
+    const request = axios.get(baseUrl + '/total');
+    return request.then(response => response.data);
+}
+
+const propertyService = { 
+    getAll, 
+    getCount 
+};
 
 export default propertyService;
