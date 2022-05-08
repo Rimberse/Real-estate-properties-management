@@ -44,3 +44,9 @@ ul {
 .property {
   margin: 25px 0;
 }
+
+img {
+  object-fit: cover;
+  width: 350px;
+  height: 250px;
+}

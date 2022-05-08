@@ -2,7 +2,9 @@ import axios from 'axios';
 const baseUrl = 'http://localhost:5000/api/properties';
 
 const getAll = () => {
-    const request = axios.get(baseUrl);
+    const page = 2;
+    const queryString = `?page=${page}`;
+    const request = axios.get(baseUrl + queryString);
 
     const nonExisting = {
         id: 0,
@@ -18,9 +20,9 @@ const getAll = () => {
         parkingLots: 0
     }
 
-    return request.then(response => response.data.concat(nonExisting));
+    return request.then(response => response.data);
 };
 
-const noteServce = { getAll };
+const propertyService = { getAll };
 
-export default noteServce;
+export default propertyService;

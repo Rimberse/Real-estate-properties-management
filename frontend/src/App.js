@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import './App.css';
 import Property from './components/Property';
 import propertyService from './services/properties';
 
 const App = () => {
   const [properties, setProperties] = useState([]);
+  const [page, setPage] = useState(0);
 
   useEffect(() => {
     propertyService
       .getAll()
       .then(initialProperties => {
-        setProperties(initialProperties);
+        setProperties(initialProperties.data);
+        setPage(initialProperties.meta.page);
       })
   }, []);
   
@@ -20,7 +21,7 @@ const App = () => {
       <h1>Real estate agency</h1>
 
       <ul>
-        {properties.map(property => <Property key={property.id} property={property} />)}
+        {properties.map(property => <Property key={property.id} property={ property } />)}
       </ul>
     </div>
   );

@@ -3,7 +3,10 @@ const express = require('express');
 const cors = require('cors');           // used to communicate with a backend from another URL
 const app = express();
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cors());
+require('dotenv').config({path: "../.env" });
+const properties = require('./services/properties');
 
 // Logging requests 
 const requestLogger = (request, response, next) => {
@@ -62,8 +65,15 @@ app.get('/', (request, response) => {
     response.send('<h1>Real estate agency</h1>');
 });
 
-app.get('/api/properties', (request, response) => {
-    response.json(realProperties);
+// GET real estate properties
+app.get('/api/properties', async (request, response, next) => {
+    // response.json(realProperties);
+    try {
+        response.json(await properties.getMultiple(request.query.page));
+    } catch (error) {
+        console.error(`Error while getting properties `, error.message);
+        next(err);
+    }
 });
 
 // sends a json response if no associate route is found e.g: (/something/somewhere)
@@ -73,7 +83,7 @@ const unknownEndpoint = (request, response) => {
 
 app.use(unknownEndpoint);
 
-const PORT = 5000;
+const PORT = process.env.PORT;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
