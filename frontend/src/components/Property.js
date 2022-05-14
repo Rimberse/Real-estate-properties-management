@@ -13,28 +13,25 @@ const Property = ({ property }) => {
       <br></br>
       <div className="property-info">
         <div className="item">
-          <i className="fa-solid fa-location-dot"></i><span>{property.adresse}</span>
-          <i className="fa-solid fa-city"></i><span>{property.ville}</span>
+          <div><span className="icon"><i className="fa-solid fa-location-dot"></i></span><span className="icon-text">{property.adresse}</span></div>
+          <div><span className="icon"><i className={'fa-solid ' + (property.type === 'Maison' ? 'fa-house' : 'fa-building')}></i></span><span className="icon-text">{property.type}</span></div>
+          <div><span className="icon"><i className="fa-solid fa-bed"></i></span><span className="icon-text">{property.nbPieces} pièces</span></div>
+          <div><span className="icon"><i className="fa-solid fa-calendar-days"></i></span><span className="icon-text">{property.date.substring(0, property.date.indexOf('T'))}</span></div>
+          <div><span className="icon"><i className="fa-solid fa-dollar-sign"></i></span><span className="icon-text">{formatter.format(property.prix)}</span></div>
+          <div><span className="icon"><i className="fa-solid fa-user"></i></span><span className="icon-text">{property.proprietaire}</span></div>
         </div>
         <div className="item">
-          <span><i className={'fa-solid ' + (property.type === 'Maison' ? 'fa-house' : 'fa-building')}></i>{property.type}</span>
-          <span><i className="fa-solid fa-square-full"></i>{property.superficie}</span>
-        </div>
-        <div className="item">
-          <span><i className="fa-solid fa-bed"></i>{property.nbPieces}</span>
-          <span><i className="fa-solid fa-warehouse"></i>{property.nbGarages}</span>
-        </div>
-        <div className="item">
-          <span><i className="fa-solid fa-calendar-days"></i>{property.date.substring(0, property.date.indexOf('T'))}</span>
-          <span><i className="fa-solid fa-clock"></i>{property.date.substring(property.date.indexOf('T') + 1, property.date.indexOf('.'))}</span>
-        </div>
-        <div className="item">
-          <span><i className="fa-solid fa-dollar-sign"></i>{formatter.format(property.prix)}</span>
-          <button className="property-more-btn">Voir</button>
-        </div>
-        <div className="item">
-          <span><i className="fa-solid fa-user"></i>{property.proprietaire}</span>
-          <span><i className="fa-solid fa-circle-check"></i>{property.etat}</span>
+          <div><span className="icon"><i className="fa-solid fa-city"></i></span><span className="icon-text">{property.ville}</span></div>
+          <div><span className="icon"><i className="fa-solid fa-square-full"></i></span><span className="icon-text">{property.superficie}</span></div>
+          <div><span className="icon"><i className="fa-solid fa-warehouse"></i></span><span className="icon-text">{property.nbGarages} garages</span></div>
+          <div><span className="icon"><i className="fa-solid fa-clock"></i></span><span className="icon-text">{property.date.substring(property.date.indexOf('T') + 1, property.date.indexOf('.'))}</span></div>
+          <button className="property-more-btn">
+            <span class="circle" aria-hidden="true">
+              <span class="icon arrow"></span>
+            </span>
+            <span className="button-text">En savoir +</span>
+          </button>
+          <div><span className="icon"><i className="fa-solid fa-circle-check"></i></span><span className="icon-text">{property.etat}</span></div>
         </div>
       </div>
     </li>
