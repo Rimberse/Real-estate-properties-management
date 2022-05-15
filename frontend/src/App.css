@@ -3,6 +3,7 @@
   --main-page-fill-color: #2F2FA2;
   --main-page-font-color: #553D67;
   --main-icon-color: #242582;
+  --main-success-button-color: #86C232;
 }
 
 .App {
@@ -122,7 +123,7 @@ img {
   padding: 0;
   font-size: inherit;
   font-family: inherit;
-  width: 12rem;
+  width: 14rem;
   height: auto;
 }
 
@@ -131,6 +132,7 @@ img {
   position: relative;
   display: block;
   margin: 0;
+  left: 1rem;
   width: 3rem;
   height: 3rem;
   background: #282936;
@@ -146,24 +148,21 @@ img {
   background: #fff;
 }
 
-.property-more-btn .circle .icon.arrow {
+.property-more-btn .circle .icon.plus {
   transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
-  left: 0.625rem;
-  width: 1.125rem;
+  left: 0.925rem;
+  width: 1.250rem;
   height: 0.125rem;
-  background: none;
 }
 
-.property-more-btn .circle .icon.arrow::before {
+.property-more-btn .circle .icon.plus::before {
   position: absolute;
   content: "";
-  top: -0.29rem;
-  right: 0.0625rem;
+  top: -0.58rem;
+  right: 0.625rem;
   width: 0.625rem;
-  height: 0.625rem;
-  border-top: 0.125rem solid #fff;
+  height: 1.250rem;
   border-right: 0.125rem solid #fff;
-  transform: rotate(45deg);
 }
 
 .property-more-btn .button-text {
@@ -186,12 +185,12 @@ img {
   width: 100%;
 }
 
-.property-more-btn:hover .circle .icon.arrow {
+.property-more-btn:hover .circle .icon.plus {
   background: #fff;
-  transform: translate(1rem, 0);
+  transform: translate(10rem, 0);
 }
 
-button:hover .button-text {
+.property-more-btn:hover .button-text {
   color: #fff;
 }
 
@@ -223,3 +222,41 @@ button:hover .button-text {
   color: #fff;
   background-color: var(--main-page-fill-color);
 }
+
+/* New property button */
+.new-property-btn {
+  --t: 7.5px;
+  /* Thickness */
+  --l: 70px;
+  /* size of the symbol */
+  --s: 15px;
+  /* space around the symbol */
+  --c1: #fff;
+  /* Plus color*/
+  --c2: var(--main-success-button-color);
+  /* background color*/
+
+  position: absolute;
+  top: 3.5rem;
+  left: 3.5rem;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  display: inline-block;
+  width: var(--l);
+  height: var(--l);
+  padding: var(--s);
+  box-sizing: border-box;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  /*Remove this if you don't want space to be included in the size*/
+
+  background:
+    linear-gradient(var(--c1) 0 0) content-box,
+    linear-gradient(var(--c1) 0 0) content-box,
+    var(--c2);
+  background-position: center;
+  background-size: 100% var(--t), var(--t) 100%;
+  background-repeat: no-repeat;
+  border-radius: 50%;
+}
+/* End of styling for new property button */

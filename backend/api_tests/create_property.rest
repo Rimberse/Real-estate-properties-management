@@ -1,0 +1,8 @@
+POST http://localhost:5000/api/properties
+Content-Type: application/json
+
+{
+    "adresse": "Gelendzhik Urban Okrug, Krasnodar Krai, Russia", "proprietaire": "Vladimir Putin", "type": "Maison", 
+    "nbPieces": "100", "superficie": "17691", "etat": "Neuf", "prix": "1400000000", "date": "2010-01-01 00:00", 
+    "ville": "Gelendzhik", "nbGarages": "40", "image": "https://ichef.bbci.co.uk/news/976/cpsprodpb/1695D/production/_116590529_download.png"
+}

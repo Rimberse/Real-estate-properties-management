@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 import Property from './components/Property';
+import NewProperty from './components/NewProperty';
 import propertyService from './services/properties';
 import PageButton from "./components/PageButton";
 
@@ -45,7 +46,7 @@ const App = () => {
   return (
     <div className="App">
       <h1>Real estate agency</h1>
-
+      {<NewProperty />}
       <ul>
         {properties.map(property => <Property key={property.id} property={property} />)}
       </ul>

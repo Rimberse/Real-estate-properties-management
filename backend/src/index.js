@@ -72,7 +72,17 @@ app.get('/', (request, response) => {
     response.send('<h1>Real estate agency</h1>');
 });
 
-// GET real estate properties
+// GET total number of properties in db. Used to calculate number of pages
+app.get('/api/properties/total', async (request, response, next) => {
+    try {
+        response.json(await properties.getAll());
+    } catch (error) {
+        console.log(`Error while getting total number of properties `, error.message);
+        next(error);
+    }
+});
+
+// GET real estate properties. Used to get the list of all properties
 app.get('/api/properties', async (request, response, next) => {
     // response.json(realProperties);
     try {
@@ -83,14 +93,15 @@ app.get('/api/properties', async (request, response, next) => {
     }
 });
 
-app.get('/api/properties/total', async (request, response, next) => {
+// POST real estate property. Used to add new property to db
+app.post('/api/properties', async (request, response, next) => {
     try {
-        response.json(await properties.getAll());
-    } catch(error) {
-        console.log(`Error while getting total number of properties `, error.message);
+        response.json(await properties.create(request.body));
+    } catch (error) {
+        console.error(`Error while creating property`, error.message);
         next(error);
     }
-})
+});
 
 // sends a json response if no associate route is found e.g: (/something/somewhere)
 const unknownEndpoint = (request, response) => {

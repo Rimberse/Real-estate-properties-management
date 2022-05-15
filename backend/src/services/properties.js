@@ -2,6 +2,14 @@ const db = require('./db');
 const helper = require('../helper');
 const config = require('../config');
 
+const getAll = async () => {
+    const rows = await db.query(
+        `SELECT COUNT(*) AS count FROM properties`
+    );
+
+    return rows[0];
+}
+
 const getMultiple = async (page = 1) => {
     const offset = helper.getOffset(page, config.listPerPage);
     // returns listPerPage number of records after the offset. For example : LIMIT 5, 10 will return records from 6 to 15
@@ -19,15 +27,24 @@ const getMultiple = async (page = 1) => {
     }
 }
 
-const getAll = async () => {
-    const rows = await db.query(
-        `SELECT COUNT(*) AS count FROM properties`
+const create = async property => {
+    const result = await db.query(
+        `INSERT INTO properties (adresse, proprietaire, type, nbPieces, superficie, etat, prix, date, ville, nbGarages, image) 
+        VALUES('${property.adresse}', '${property.proprietaire}', '${property.type}', '${property.nbPieces}', '${property.superficie}', 
+            '${property.etat}', '${property.prix}', '${property.date}', '${property.ville}', '${property.nbGarages}', '${property.image}');`
     );
 
-    return rows[0];
+    let message = 'An attempt to create a property has failed';
+
+    if (result.affectedRows) {
+        message = 'Property has been created successfully!';
+    }
+
+    return { message };
 }
 
 module.exports = {
+    getAll,
     getMultiple,
-    getAll
+    create
 }
