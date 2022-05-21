@@ -9,6 +9,7 @@ const App = () => {
   const [properties, setProperties] = useState([]);
   const [page, setPage] = useState(Number(1));
   const lastPage = useRef(0);     // used to persist last page number for total number of properties between renders
+  const [user, setUser] = useState('Guest');    // Used to grand the admin right to perform CUD operations
 
   // Runs once (upon first loading of webpage). Sets total number of real estate properties
   // Used to get the rightmost value for pagination
@@ -16,6 +17,7 @@ const App = () => {
     propertyService
       .getCount()
       .then(nbProperties => lastPage.current = Math.ceil(nbProperties.count / 10));
+    setUser('Admin');
   }, []);
 
   // Runs when the component is initally rendered,
@@ -32,7 +34,7 @@ const App = () => {
   const loadPrevPage = () => {
     if (page <= 1)
       return;
-    
+
     setPage(page - 1);
   }
 
@@ -46,17 +48,18 @@ const App = () => {
   return (
     <div className="App">
       <h1>Real estate agency</h1>
-      {<NewProperty />}
+      {/* {<NewProperty user={user} />} */}
+      <NewProperty user={user} />
       <ul>
         {properties.map(property => <Property key={property.id} property={property} />)}
       </ul>
       <div id="pagination-bar">
         {/* Conditional rendering, if it's the first page, the previous button (0) won't be rendered */}
-        {page > 1 && <PageButton page = {page - 1} loadPage = {() => loadPrevPage()} />}
-        {<PageButton page = {page} active = {true} />}
-        {(page + 1) < lastPage.current && <PageButton page = {page + 1} loadPage = {() => loadNextPage()} />}
-        {(lastPage.current > 2 && (page + 1) < lastPage.current) && <PageButton page = {'...'} />}
-        {(lastPage.current > 2 && page < lastPage.current) && <PageButton page = {lastPage.current} loadPage = {() => setPage(lastPage.current)} />}
+        {page > 1 && <PageButton page={page - 1} loadPage={() => loadPrevPage()} />}
+        {<PageButton page={page} active={true} />}
+        {(page + 1) < lastPage.current && <PageButton page={page + 1} loadPage={() => loadNextPage()} />}
+        {(lastPage.current > 2 && (page + 1) < lastPage.current) && <PageButton page={'...'} />}
+        {(lastPage.current > 2 && page < lastPage.current) && <PageButton page={lastPage.current} loadPage={() => setPage(lastPage.current)} />}
       </div>
     </div>
   );

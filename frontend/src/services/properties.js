@@ -5,20 +5,6 @@ const getAll = page => {
     const queryString = `?page=${page}`;
     const request = axios.get(baseUrl + queryString);
 
-    const nonExisting = {
-        id: 0,
-        address: 'This property is not saved to the database',
-        owner: 'Person',
-        type: 'Appartement',
-        bedrooms: 1,
-        surface: '1 m2',
-        state: 'neuf',
-        price: 0,
-        availabilityDate: new Date().toDateString(),
-        city: 'Unkown',
-        parkingLots: 0
-    }
-
     return request.then(response => response.data);
 };
 
@@ -27,9 +13,22 @@ const getCount = () => {
     return request.then(response => response.data);
 }
 
+const addProperty = payload => {
+    const config = {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+    }      
+
+    const request = axios.post(baseUrl, payload, config);
+
+    return request.then(response => response);
+}
+
 const propertyService = { 
     getAll, 
-    getCount 
+    getCount,
+    addProperty
 };
 
 export default propertyService;

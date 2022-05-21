@@ -1,42 +1,157 @@
-import React from 'react';
+import React, { useState } from 'react';
+import DatePicker from "react-datepicker";
+import propertyService from '../services/properties';
+import { registerLocale, setDefaultLocale } from "react-datepicker";
+import fr from 'date-fns/locale/fr';
 
-const NewProperty = ({ property }) => {
-    // Formats price to the given currency and region. Used to nicely format price of real estates
-    const formatter = new Intl.NumberFormat('fr-FR', {
-      style: 'currency',
-      currency: 'EUR'
-    });
-  
-    return (
-        <button className="new-property-btn"></button>
-      /*<li className="property">
-        <img src={property.image} alt="Property"></img>
-        <br></br>
-        <div className="property-info">
-          <div className="item">
-            <div><span className="icon"><i className="fa-solid fa-location-dot"></i></span><span className="icon-text">{property.adresse}</span></div>
-            <div><span className="icon"><i className={'fa-solid ' + (property.type === 'Maison' ? 'fa-house' : 'fa-building')}></i></span><span className="icon-text">{property.type}</span></div>
-            <div><span className="icon"><i className="fa-solid fa-bed"></i></span><span className="icon-text">{property.nbPieces} pièces</span></div>
-            <div><span className="icon"><i className="fa-solid fa-calendar-days"></i></span><span className="icon-text">{property.date.substring(0, property.date.indexOf('T'))}</span></div>
-            <div><span className="icon"><i className="fa-solid fa-dollar-sign"></i></span><span className="icon-text">{formatter.format(property.prix)}</span></div>
-            <div><span className="icon"><i className="fa-solid fa-user"></i></span><span className="icon-text">{property.proprietaire}</span></div>
-          </div>
-          <div className="item">
-            <div><span className="icon"><i className="fa-solid fa-city"></i></span><span className="icon-text">{property.ville}</span></div>
-            <div><span className="icon"><i className="fa-solid fa-square-full"></i></span><span className="icon-text">{property.superficie}</span></div>
-            <div><span className="icon"><i className="fa-solid fa-warehouse"></i></span><span className="icon-text">{property.nbGarages} garages</span></div>
-            <div><span className="icon"><i className="fa-solid fa-clock"></i></span><span className="icon-text">{property.date.substring(property.date.indexOf('T') + 1, property.date.indexOf('.'))}</span></div>
-            <button className="property-more-btn">
-              <span class="circle" aria-hidden="true">
-                <span class="icon plus"></span>
-              </span>
-              <span className="button-text">En savoir</span>
-            </button>
-            <div><span className="icon"><i className="fa-solid fa-circle-check"></i></span><span className="icon-text">{property.etat}</span></div>
-          </div>
-        </div>
-      </li>*/
-    );
+import "react-datepicker/dist/react-datepicker.css";
+import { secondsToMilliseconds } from 'date-fns';
+
+const NewProperty = ({ user }) => {
+  const baseUrl = "http://localhost:5000/api/properties";
+  const [showForm, setShowForm] = useState(false);
+  const [type, setType] = useState('Type');
+  const [date, setDate] = useState(new Date());
+  const [message, setMessage] = useState('');
+
+  registerLocale('fr', fr);
+  setDefaultLocale('fr');
+
+  const displayPropertyForm = () => {
+    if (user === 'Admin') {
+      setShowForm(!showForm);
+    }
   };
-  
-  export default NewProperty;
+
+  const changeType = event => {
+    setType(event.target.value);
+  }
+
+  const formatDate = date => {
+    let d = new Date(date),
+      month = '' + (d.getMonth() + 1),
+      day = '' + d.getDate(),
+      year = d.getFullYear(),
+      hour = '' + d.getHours(),
+      minute = '' + d.getMinutes(),
+      second = '' + d.getSeconds();
+
+    if (month.length < 2)
+      month = '0' + month;
+    if (day.length < 2)
+      day = '0' + day;
+    if (hour.length < 2)
+      hour = '0' + hour;
+    if (minute.length < 2)
+      minute = '0' + minute;
+    if (second.length < 2)
+      second = '0' + second;
+
+    return [year, month, day].join('-') + ' ' + [hour, minute, second].join(':');
+  }
+
+  // Event handler for form submit
+  const handleSubmit = e => {
+    e.preventDefault();
+
+    const data = new URLSearchParams();
+    for (const pair of new FormData(document.querySelector('.new-property-form'))) {
+      if (!pair[1]) {
+        setMessage('Please provide values for all fields!');
+        setTimeout(() => setMessage(''), 3000);
+        return;
+      }
+      data.append(pair[0], pair[1]);
+    }
+
+    propertyService.addProperty(data)
+    .then(response => {
+      setMessage(response.data.message);
+      setTimeout(() => setMessage(''), 3000);
+      displayPropertyForm();
+    })
+  };
+
+  return (
+    <>
+      {(message !== '') && 
+      <h2 className={"status-message " + (message !== "Please provide values for all fields!" ? "success" : "error")}>{message}</h2>}
+      {!showForm && <button onClick={displayPropertyForm} className="new-property-btn"></button>}
+      {showForm &&
+        <form action={baseUrl} method="POST" className="new-property-form" onSubmit={handleSubmit}>
+          <div className="new-property-form-column">
+            <div className="new-property-form-column-item">
+              <label htmlFor="adresse"><span className="icon"><i className="fa-solid fa-location-dot"></i></span></label>
+              <input name="adresse" id="adresse" defaultValue="adresse"></input>
+            </div>
+            <div className="new-property-form-column-item">
+              <label htmlFor="type">
+                {/* Change icons depending on option value */}
+                {type === 'Maison' && <span className="icon"><i className='fa-solid fa-house'></i></span>}
+                {type === 'Appartement' && <span className="icon"><i className='fa-solid fa-building'></i></span>}
+              </label>
+              <select name="type" id="type" defaultValue={"type"} onChange={changeType}>
+                <option value="type" disabled hidden>type</option>
+                <option value="Maison">Maison</option>
+                <option value="Appartement">Appartement</option>
+              </select>
+            </div>
+            <div className="new-property-form-column-item">
+              <label htmlFor="nbPieces"><span className="icon"><i className="fa-solid fa-bed"></i></span></label>
+              <input name="nbPieces" id="nbPieces" defaultValue="nombre de pièces" type="number" min="0"></input>
+            </div>
+            <div className="new-property-form-column-item">
+              <label htmlFor="date"><span className="icon"><i className="fa-solid fa-calendar-days"></i></span></label>
+              <DatePicker className="calendar" selected={date} onChange={(date) => setDate(date)} showTimeSelect dateFormat="Pp" locale="fr" />
+              <input name="date" id="date" type="hidden" defaultValue={formatDate(date)}>
+              </input>
+            </div>
+            <div className="new-property-form-column-item">
+              <label htmlFor="prix"><span className="icon"><i className="fa-solid fa-dollar-sign"></i></span></label>
+              <input name="prix" id="prix" defaultValue="prix" type="number" min="0"></input>
+            </div>
+            <div className="new-property-form-column-item">
+              <label htmlFor="proprietaire"><span className="icon"><i className="fa-solid fa-user"></i></span></label>
+              <input name="proprietaire" id="proprietaire" defaultValue="proprietaire"></input>
+            </div>
+          </div>
+          <div className="new-property-form-column">
+            <div className="new-property-form-column-item">
+              <label htmlFor="ville"><span className="icon"><i className="fa-solid fa-city"></i></span></label>
+              <input name="ville" id="ville" defaultValue="ville"></input>
+            </div>
+            <div className="new-property-form-column-item">
+              <label htmlFor="superficie"><span className="icon"><i className="fa-solid fa-square-full"></i></span></label>
+              <input name="superficie" id="superficie" defaultValue="superficie"></input>
+            </div>
+            <div className="new-property-form-column-item">
+              <label htmlFor="nbGarages"><span className="icon"><i className="fa-solid fa-warehouse"></i></span></label>
+              <input name="nbGarages" id="nbGarages" defaultValue="nombre de garages" type="number" min="0"></input>
+            </div>
+            <div className="new-property-form-column-item">
+              <label htmlFor="etat"><span className="icon"><i className="fa-solid fa-circle-check"></i></span></label>
+              <select name="etat" id="etat" defaultValue={"etat"}>
+                <option value="etat" disabled hidden>etat</option>
+                <option value="Neuf">Neuf</option>
+                <option value="Tres bon etat">Très bon état</option>
+                <option value="Bon etat">Bon état</option>
+                <option value="Mauvais etat">Mauvais état</option>
+              </select>
+            </div>
+            <div className="new-property-form-column-item">
+              <label htmlFor="image"><span className="icon"><i className="fa-solid fa-image"></i></span></label>
+              <input name="image" id="image" defaultValue="image URL"></input>
+            </div>
+            <div>
+              <button className="new-property-form-btn">Créer</button>
+            </div>
+            <div>
+              <button className="new-property-cancel-btn" type="button" onClick={displayPropertyForm}></button>
+            </div>
+          </div>
+        </form>}
+    </>
+  );
+};
+
+export default NewProperty;

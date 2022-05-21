@@ -26,8 +26,8 @@ const Property = ({ property }) => {
           <div><span className="icon"><i className="fa-solid fa-warehouse"></i></span><span className="icon-text">{property.nbGarages} garages</span></div>
           <div><span className="icon"><i className="fa-solid fa-clock"></i></span><span className="icon-text">{property.date.substring(property.date.indexOf('T') + 1, property.date.indexOf('.'))}</span></div>
           <button className="property-more-btn">
-            <span class="circle" aria-hidden="true">
-              <span class="icon plus"></span>
+            <span className="circle" aria-hidden="true">
+              <span className="icon plus"></span>
             </span>
             <span className="button-text">En savoir</span>
           </button>
