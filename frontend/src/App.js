@@ -31,6 +31,15 @@ const App = () => {
       })
   }, [page]);
 
+  const refresh = () => {
+    propertyService
+      .getAll(page)
+      .then(properties => {
+        setProperties(properties.data);
+        setPage(Number(properties.meta.page));
+      })
+  }
+
   const loadPrevPage = () => {
     if (page <= 1)
       return;
@@ -51,14 +60,16 @@ const App = () => {
       {/* {<NewProperty user={user} />} */}
       <NewProperty user={user} />
       <ul>
-        {properties.map(property => <Property key={property.id} property={property} user={user} />)}
+        {properties.map(property => <Property key={property.id} property={property} user={user} reflectChanges={refresh} />)}
       </ul>
       <div id="pagination-bar">
+        {(page > 2 && lastPage.current > 3) && <PageButton page={1} loadPage={() => setPage(1)} />}
+        {(page > 3 && lastPage.current > 4) && <PageButton page={'...'} />}
         {/* Conditional rendering, if it's the first page, the previous button (0) won't be rendered */}
         {page > 1 && <PageButton page={page - 1} loadPage={() => loadPrevPage()} />}
         {<PageButton page={page} active={true} />}
         {(page + 1) < lastPage.current && <PageButton page={page + 1} loadPage={() => loadNextPage()} />}
-        {(lastPage.current > 2 && (page + 1) < lastPage.current) && <PageButton page={'...'} />}
+        {(lastPage.current > 3 && (page + 2) < lastPage.current) && <PageButton page={'...'} />}
         {(lastPage.current > 2 && page < lastPage.current) && <PageButton page={lastPage.current} loadPage={() => setPage(lastPage.current)} />}
       </div>
     </div>

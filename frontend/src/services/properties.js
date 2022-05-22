@@ -16,9 +16,9 @@ const getCount = () => {
 const addProperty = payload => {
     const config = {
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
+            'Content-Type': 'application/x-www-form-urlencoded'
         }
-    }      
+    }
 
     const request = axios.post(baseUrl, payload, config);
 
@@ -28,7 +28,7 @@ const addProperty = payload => {
 const updateProperty = (id, payload) => {
     const config = {
         headers: {
-          'Content-Type': 'application/json'
+            'Content-Type': 'application/json'
         }
     }
 
@@ -36,11 +36,17 @@ const updateProperty = (id, payload) => {
     return request.then(response => response.data);
 }
 
-const propertyService = { 
-    getAll, 
+const removeProperty = id => {
+    const request = axios.delete(baseUrl + '/' + id);
+    return request.then(response => response.data);
+}
+
+const propertyService = {
+    getAll,
     getCount,
     addProperty,
-    updateProperty
+    updateProperty,
+    removeProperty
 };
 
 export default propertyService;

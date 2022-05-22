@@ -16,3 +16,6 @@ Content-Type: application/json
     "nbPieces": 4, "superficie": "120 m2", "etat": "Bon etat", "prix": 101000, "date": "2050-05-05 05:05", 
     "ville": "Springfield", "nbGarages": "1", "image": "https://static.wikia.nocookie.net/simpsons/images/6/65/800px-742_Evergreen_Terrace.png/revision/latest?cb=20170101225756"
 }
+
+###
+DELETE http://localhost:5000/api/properties/290

@@ -59,9 +59,24 @@ const update = async (id, property) => {
     return { message };
 }
 
+const remove = async id => {
+    const result = await db.query(
+        `DELETE FROM properties WHERE id=${id}`
+    );
+
+    let message = 'Error while deleting a property';
+
+    if (result.affectedRows) {
+        message = 'Property has been deleted successfully';
+    }
+
+    return { message };
+}
+
 module.exports = {
     getAll,
     getMultiple,
     create,
-    update
+    update,
+    remove
 }

@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import propertyService from '../services/properties';
 import NewProperty from './NewProperty';
 
-const Property = ({ property, user }) => {
+const Property = ({ property, user, reflectChanges }) => {
   const [edit, setEdit] = useState(false);
   const [propertyId, setPropertyId] = useState(property.id);
+  const [message, setMessage] = useState('');
+  const btnRef = useRef();
 
   // Formats price to the given currency and region. Used to nicely format price of real estates
   const formatter = new Intl.NumberFormat('fr-FR', {
@@ -17,8 +19,26 @@ const Property = ({ property, user }) => {
     setEdit(!edit);
   }
 
+  const deleteHandler = () => {
+    if (btnRef.current) {
+      btnRef.current.setAttribute("disabled", "disabled");
+    }
+
+    setPropertyId(property.id);
+    propertyService.removeProperty(propertyId)
+      .then(response => {
+        setMessage(response.message);
+        setTimeout(() => {
+          setMessage('');
+          reflectChanges();
+          btnRef.current.removeAttribute("disabled");
+        }, 3000);
+      })
+  }
+
   return (
     <li>
+      {(message !== '') && <h2 className="status-message success">{message}</h2>}
       <div className="property-card">
         <div className="property">
           <img src={property.image} alt="Property"></img>
@@ -49,7 +69,7 @@ const Property = ({ property, user }) => {
         </div>
         {user === 'Admin' && <div>
           <button className="property-edit-btn" onClick={editHandler}><span className="icon edit"><i className="fa-solid fa-pen"></i></span><span className="icon-text">Modifier</span></button>
-          <button className="property-delete-btn"><span className="icon delete"><i className="fa-solid fa-trash"></i></span><span className="icon-text">Supprimer</span></button>
+          <button className="property-delete-btn" ref={btnRef} onClick={deleteHandler}><span className="icon delete"><i className="fa-solid fa-trash"></i></span><span className="icon-text">Supprimer</span></button>
         </div>}
       </div>
       {edit && <NewProperty user = {'Edit'} id = {propertyId} />}

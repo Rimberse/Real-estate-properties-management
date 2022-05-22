@@ -5,7 +5,6 @@ import { registerLocale, setDefaultLocale } from "react-datepicker";
 import fr from 'date-fns/locale/fr';
 
 import "react-datepicker/dist/react-datepicker.css";
-import { secondsToMilliseconds } from 'date-fns';
 
 const NewProperty = ({ user, id }) => {
   const baseUrl = "http://localhost:5000/api/properties";
@@ -63,7 +62,7 @@ const NewProperty = ({ user, id }) => {
       const data = new URLSearchParams();
       for (const pair of new FormData(document.querySelector('.new-property-form'))) {
         if (!pair[1]) {
-          setMessage('Veuillez remplir les champs correctement!');
+          setMessage('Veuillez remplir les champs correctement !');
           setTimeout(() => setMessage(''), 3000);
           return;
         }
@@ -76,6 +75,14 @@ const NewProperty = ({ user, id }) => {
           setTimeout(() => setMessage(''), 3000);
         })
     } else {
+      if (!e.target.adresse.value || !e.target.type.value || !e.target.nbPieces.value || !e.target.date.value || !e.target.prix.value || 
+        !e.target.proprietaire.value || !e.target.ville.value || !e.target.superficie.value || !e.target.nbGarages.value || 
+        !e.target.etat.value || !e.target.image.value) {
+          setMessage('Veuillez remplir les champs correctement !');
+          setTimeout(() => setMessage(''), 3000);
+          return;
+        }
+
       const data = {
         adresse: e.target.adresse.value,
         type: e.target.type.value,
@@ -103,7 +110,7 @@ const NewProperty = ({ user, id }) => {
   return (
     <>
       {(message !== '') &&
-        <h2 className={"status-message " + (message !== "Veuillez remplir les champs correctement!" ? "success" : "error")}>{message}</h2>}
+        <h2 className={"status-message " + (message !== "Veuillez remplir les champs correctement !" ? "success" : "error")}>{message}</h2>}
       {!showForm && user === 'Admin' && <button onClick={displayPropertyForm} className="new-property-btn"></button>}
       {showForm &&
         <form action={baseUrl} method="POST" className="new-property-form" onSubmit={handleSubmit}>

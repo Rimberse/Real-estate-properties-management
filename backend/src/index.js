@@ -113,6 +113,16 @@ app.put('/api/properties/:id', async (request, response, next) => {
     }
 });
 
+// DELETE real estate property. Used to remove an existing property from the list (front) and from the db
+app.delete('/api/properties/:id', async (request, response, next) => {
+    try {
+        response.json(await properties.remove(request.params.id));
+    } catch (error) {
+        console.error(`Error while deleting property`, error.message);
+        next(error);
+    }
+});
+
 // sends a json response if no associate route is found e.g: (/something/somewhere)
 const unknownEndpoint = (request, response) => {
     response.status(404).send({ error: 'unknown endpoint' });
