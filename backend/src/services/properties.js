@@ -43,8 +43,25 @@ const create = async property => {
     return { message };
 }
 
+const update = async (id, property) => {
+    const result = await db.query(
+        `UPDATE properties SET adresse="${property.adresse}", proprietaire="${property.proprietaire}", type="${property.type}", 
+        nbPieces=${property.nbPieces}, superficie="${property.superficie}", etat="${property.etat}", prix=${property.prix}, 
+        date="${property.date}", ville="${property.ville}", nbGarages=${property.nbGarages}, image="${property.image}" WHERE id=${id}`
+    );
+
+    let message = 'Error while updating a property';
+
+    if (result.affectedRows) {
+        message = 'Property has been updated successfully';
+    }
+
+    return { message };
+}
+
 module.exports = {
     getAll,
     getMultiple,
-    create
+    create,
+    update
 }

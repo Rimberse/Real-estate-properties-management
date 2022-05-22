@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DatePicker from "react-datepicker";
 import propertyService from '../services/properties';
 import { registerLocale, setDefaultLocale } from "react-datepicker";
@@ -7,7 +7,7 @@ import fr from 'date-fns/locale/fr';
 import "react-datepicker/dist/react-datepicker.css";
 import { secondsToMilliseconds } from 'date-fns';
 
-const NewProperty = ({ user }) => {
+const NewProperty = ({ user, id }) => {
   const baseUrl = "http://localhost:5000/api/properties";
   const [showForm, setShowForm] = useState(false);
   const [type, setType] = useState('Type');
@@ -17,8 +17,13 @@ const NewProperty = ({ user }) => {
   registerLocale('fr', fr);
   setDefaultLocale('fr');
 
+  useEffect(() => {
+    if (user === 'Edit')
+      setShowForm(true);
+  }, []);
+
   const displayPropertyForm = () => {
-    if (user === 'Admin') {
+    if (user === 'Admin' || user === 'Edit') {
       setShowForm(!showForm);
     }
   };
@@ -54,29 +59,52 @@ const NewProperty = ({ user }) => {
   const handleSubmit = e => {
     e.preventDefault();
 
-    const data = new URLSearchParams();
-    for (const pair of new FormData(document.querySelector('.new-property-form'))) {
-      if (!pair[1]) {
-        setMessage('Please provide values for all fields!');
-        setTimeout(() => setMessage(''), 3000);
-        return;
+    if (user !== 'Edit') {
+      const data = new URLSearchParams();
+      for (const pair of new FormData(document.querySelector('.new-property-form'))) {
+        if (!pair[1]) {
+          setMessage('Veuillez remplir les champs correctement!');
+          setTimeout(() => setMessage(''), 3000);
+          return;
+        }
+        data.append(pair[0], pair[1]);
       }
-      data.append(pair[0], pair[1]);
+
+      propertyService.addProperty(data)
+        .then(response => {
+          setMessage(response.message);
+          setTimeout(() => setMessage(''), 3000);
+        })
+    } else {
+      const data = {
+        adresse: e.target.adresse.value,
+        type: e.target.type.value,
+        nbPieces: e.target.nbPieces.value,
+        date: e.target.date.value,
+        prix: e.target.prix.value,
+        proprietaire: e.target.proprietaire.value,
+        ville: e.target.ville.value,
+        superficie: e.target.superficie.value,
+        nbGarages: e.target.nbGarages.value,
+        etat: e.target.etat.value,
+        image: e.target.image.value
+      }
+
+      propertyService.updateProperty(id, data)
+        .then(response => {
+          setMessage(response.message);
+          setTimeout(() => setMessage(''), 3000);
+        })
     }
 
-    propertyService.addProperty(data)
-    .then(response => {
-      setMessage(response.data.message);
-      setTimeout(() => setMessage(''), 3000);
-      displayPropertyForm();
-    })
+    displayPropertyForm();
   };
 
   return (
     <>
-      {(message !== '') && 
-      <h2 className={"status-message " + (message !== "Please provide values for all fields!" ? "success" : "error")}>{message}</h2>}
-      {!showForm && <button onClick={displayPropertyForm} className="new-property-btn"></button>}
+      {(message !== '') &&
+        <h2 className={"status-message " + (message !== "Veuillez remplir les champs correctement!" ? "success" : "error")}>{message}</h2>}
+      {!showForm && user === 'Admin' && <button onClick={displayPropertyForm} className="new-property-btn"></button>}
       {showForm &&
         <form action={baseUrl} method="POST" className="new-property-form" onSubmit={handleSubmit}>
           <div className="new-property-form-column">
@@ -102,7 +130,7 @@ const NewProperty = ({ user }) => {
             </div>
             <div className="new-property-form-column-item">
               <label htmlFor="date"><span className="icon"><i className="fa-solid fa-calendar-days"></i></span></label>
-              <DatePicker className="calendar" selected={date} onChange={(date) => setDate(date)} showTimeSelect dateFormat="Pp" locale="fr" />
+              <DatePicker className="calendar" selected={date} onChange={(date) => setDate(date)/*setDate(date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds())*/} showTimeSelect dateFormat="Pp" locale="fr" />
               <input name="date" id="date" type="hidden" defaultValue={formatDate(date)}>
               </input>
             </div>
@@ -143,11 +171,11 @@ const NewProperty = ({ user }) => {
               <input name="image" id="image" defaultValue="image URL"></input>
             </div>
             <div>
-              <button className="new-property-form-btn">Créer</button>
+              <button className="new-property-form-btn">{user === 'Admin' ? "Créer" : "Mettre à jour"}</button>
             </div>
-            <div>
+            {user !== 'Edit' && <div>
               <button className="new-property-cancel-btn" type="button" onClick={displayPropertyForm}></button>
-            </div>
+            </div>}
           </div>
         </form>}
     </>

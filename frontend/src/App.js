@@ -51,7 +51,7 @@ const App = () => {
       {/* {<NewProperty user={user} />} */}
       <NewProperty user={user} />
       <ul>
-        {properties.map(property => <Property key={property.id} property={property} />)}
+        {properties.map(property => <Property key={property.id} property={property} user={user} />)}
       </ul>
       <div id="pagination-bar">
         {/* Conditional rendering, if it's the first page, the previous button (0) won't be rendered */}

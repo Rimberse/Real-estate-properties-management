@@ -3,7 +3,7 @@
   --main-page-fill-color: #2F2FA2;
   --main-page-font-color: #553D67;
   --main-icon-color: #242582;
-  --main-success-button-color: #86C232;
+  --main-success-button-color: #14A76C;
   --main-error-button-color: #FC4445;
 }
 
@@ -53,14 +53,25 @@ ul {
   list-style-type: none;
 }
 
+li {
+  margin: 70px auto;
+}
+
+.property-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  width: 1000px;
+  margin: 0 auto;
+}
+
 .property {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 50px auto;
-  /* border: 2px solid var(--main-page-fill-color); */
   border-radius: 0.25rem;
-  width: 1000px;
+  width: 100%;
   height: 250px;
   overflow: hidden;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
@@ -137,7 +148,7 @@ img {
   display: flex;
   align-items: flex-start;
   justify-content: space-around;
-  margin: 0 auto;
+  margin: 25px auto;
   width: 1000px;
   padding: 25px;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
@@ -291,8 +302,47 @@ img {
 .property-more-btn:hover .button-text {
   color: #fff;
 }
-
 /* End of button style */
+
+/* Property info edit, delete button */
+.property-edit-btn, .property-delete-btn {
+  background-color: initial;
+  border-radius: 2.5px;
+  border-style: none;
+  box-shadow: rgba(245, 244, 247, .25) 0 1px 1px inset;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 500;
+  height: 40px;
+  line-height: 40px;
+  outline: 0;
+  text-align: center;
+  transition: all .3s cubic-bezier(.05, .03, .35, 1);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: bottom;
+  width: 160px;
+}
+
+.property-edit-btn:hover, .property-delete-btn:hover {
+  opacity: .7;
+}
+
+.property-edit-btn {
+  background-image: linear-gradient(#86C232 0, #61892F 100%);
+}
+
+.property-delete-btn {
+  background-image: linear-gradient(#C3073F 0, #950740 100%);
+}
+
+.icon.edit, .icon.delete {
+  color: #fff;
+}
+/* End of property edit, delete button styling */
 
 /* Cancellation button style */
 .new-property-cancel-btn {

@@ -103,6 +103,16 @@ app.post('/api/properties', async (request, response, next) => {
     }
 });
 
+// PUT real estate property. Used to update informations of existing property in db
+app.put('/api/properties/:id', async (request, response, next) => {
+    try {
+        response.json(await properties.update(request.params.id, request.body));
+    } catch (error) {
+        console.error(`Error while updating property`, error.message);
+        next(error);
+    }
+});
+
 // sends a json response if no associate route is found e.g: (/something/somewhere)
 const unknownEndpoint = (request, response) => {
     response.status(404).send({ error: 'unknown endpoint' });
@@ -114,4 +124,3 @@ const PORT = process.env.PORT;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
-

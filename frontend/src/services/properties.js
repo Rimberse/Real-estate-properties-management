@@ -22,13 +22,25 @@ const addProperty = payload => {
 
     const request = axios.post(baseUrl, payload, config);
 
-    return request.then(response => response);
+    return request.then(response => response.data);
+}
+
+const updateProperty = (id, payload) => {
+    const config = {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+    }
+
+    const request = axios.put(baseUrl + '/' + id, JSON.stringify(payload), config);
+    return request.then(response => response.data);
 }
 
 const propertyService = { 
     getAll, 
     getCount,
-    addProperty
+    addProperty,
+    updateProperty
 };
 
 export default propertyService;
