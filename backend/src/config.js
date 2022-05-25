@@ -1,7 +1,7 @@
 // Config file used to store database credentials, configurations, etc.
 const config = {
     db: {
-        host: "db4free.net",
+        host: process.env.HOST,
         user: process.env.USER,
         password: process.env.PASSWORD,
         database: process.env.DATABASE,

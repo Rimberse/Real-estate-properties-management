@@ -8,9 +8,7 @@
 }
 
 .App {
-  text-align: center;
-  margin: 0 auto;
-  max-width: 1200px;
+  
 }
 
 .App-logo {
@@ -129,6 +127,8 @@ img {
 
 /* POST form submit status */
 .status-message {
+  margin: 0 auto;
+  text-align: center;
   font-size: 28px;
   font-weight: 700;
   color: var(--main-success-button-color);
@@ -346,9 +346,9 @@ img {
 
 /* Cancellation button style */
 .new-property-cancel-btn {
-  --t: 5.5px;
+  --t: 5px;
   /* Thickness */
-  --l: 60px;
+  --l: 50px;
   /* size of the symbol */
   --s: 12.5px;
   /* space around the symbol */
@@ -424,7 +424,7 @@ img {
   /* background color*/
 
   position: absolute;
-  top: 3.5rem;
+  top: 6rem;
   left: 3.5rem;
   border: none;
   outline: none;
