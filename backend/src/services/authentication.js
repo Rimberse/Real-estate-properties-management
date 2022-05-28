@@ -58,6 +58,7 @@ const getUser = async (email, password) => {
     message = "User has been logged in";
 
     return {
+      userID: rows[0].id,
       message,
       cookie,
     };

@@ -1,6 +1,6 @@
 // Using dependencies
 const express = require("express");
-const cors = require("cors"); // used to communicate with a backend from another URL
+const cors = require("cors");                                     // used to communicate with a backend from another URL
 const app = express();
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
@@ -10,6 +10,7 @@ app.use(cors());
 require("dotenv").config({ path: "../.env" });
 const properties = require("./services/properties");
 const authentication = require("./services/authentication");
+const tours = require("./services/tours");
 
 // Logging requests
 const requestLogger = (request, response, next) => {
@@ -102,7 +103,7 @@ app.post("/authentication/login", async (req, res, next) => {
           response.cookie.cookies
         );
 
-      res.json({ message: response.message });
+      res.json({ userID: response.userID, message: response.message });
     } catch (err) {
       console.log(`Error while checking user credentials `, err.message);
       next(err);
@@ -176,7 +177,6 @@ app.get("/api/properties/total", async (request, response, next) => {
 
 // GET real estate properties. Used to get the list of all properties
 app.get("/api/properties", async (request, response, next) => {
-  // response.json(realProperties);
   try {
     response.json(await properties.getMultiple(request.query.page));
   } catch (error) {
@@ -190,7 +190,7 @@ app.post("/api/properties", async (request, response, next) => {
   try {
     response.json(await properties.create(request.body));
   } catch (error) {
-    console.error(`Error while creating property`, error.message);
+    console.error(`Error while creating property `, error.message);
     next(error);
   }
 });
@@ -200,7 +200,7 @@ app.put("/api/properties/:id", async (request, response, next) => {
   try {
     response.json(await properties.update(request.params.id, request.body));
   } catch (error) {
-    console.error(`Error while updating property`, error.message);
+    console.error(`Error while updating property `, error.message);
     next(error);
   }
 });
@@ -210,7 +210,27 @@ app.delete("/api/properties/:id", async (request, response, next) => {
   try {
     response.json(await properties.remove(request.params.id));
   } catch (error) {
-    console.error(`Error while deleting property`, error.message);
+    console.error(`Error while deleting property `, error.message);
+    next(error);
+  }
+});
+
+// GET all house tours. Used to retrieve all bookings made by clients
+app.get("/api/houseTours", async (request, response, next) => {
+  try {
+    response.json(await tours.getMultiple(request.query.page));
+  } catch (error) {
+    console.error(`Error while getting house tours `, error.message);
+    next(error);
+  }
+});
+
+// POST a house tour. Used to book house tours
+app.post("/api/houseTours", async (request, response, next) => {
+  try {
+    response.json(await tours.create(request.body));
+  } catch (error) {
+    console.error(`Error while creating a house tour `, error.message);
     next(error);
   }
 });

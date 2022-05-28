@@ -1,18 +1,54 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import propertyService from '../services/properties';
+import houseTourService from '../services/houseTours';
 import NewProperty from './NewProperty';
+import DatePicker, { registerLocale, setDefaultLocale } from "react-datepicker";
+import fr from 'date-fns/locale/fr';
 
-const Property = ({ property, user, reflectChanges }) => {
+const Property = ({ property, user, reflectChanges, clientID }) => {
   const [edit, setEdit] = useState(false);
   const [propertyId, setPropertyId] = useState(property.id);
   const [message, setMessage] = useState('');
+  const [bookTour, setBookTour] = useState(false);
+  const [date, setDate] = useState(new Date());
+  const [minDate, setMinDate] = useState(new Date());
   const btnRef = useRef();
+
+  registerLocale('fr', fr);
+  setDefaultLocale('fr');
+
+  useEffect(() => {
+    setMinDate(minDate.setDate(minDate.getDate() + 1));
+  }, []);
 
   // Formats price to the given currency and region. Used to nicely format price of real estates
   const formatter = new Intl.NumberFormat('fr-FR', {
     style: 'currency',
     currency: 'EUR'
   });
+
+  const formatDate = date => {
+    let d = new Date(date),
+      month = '' + (d.getMonth() + 1),
+      day = '' + d.getDate(),
+      year = d.getFullYear(),
+      hour = '' + d.getHours(),
+      minute = '' + d.getMinutes(),
+      second = '' + d.getSeconds();
+
+    if (month.length < 2)
+      month = '0' + month;
+    if (day.length < 2)
+      day = '0' + day;
+    if (hour.length < 2)
+      hour = '0' + hour;
+    if (minute.length < 2)
+      minute = '0' + minute;
+    if (second.length < 2)
+      second = '0' + second;
+
+    return [year, month, day].join('-') + ' ' + [hour, minute, second].join(':');
+  }
 
   const editHandler = () => {
     setPropertyId(property.id);
@@ -35,6 +71,33 @@ const Property = ({ property, user, reflectChanges }) => {
         }, 3000);
       })
   }
+
+  const showBookingFormHandler = () => {
+    setBookTour(!bookTour);
+  }
+
+  const bookTourHandler = () => {
+    setPropertyId(property.id);
+
+    if (!date || !propertyId || !clientID) {
+      setMessage("Veuillez remplir les champs correctement !");
+      setTimeout(() => setMessage(""), 3000);
+      return;
+    }
+
+    const data = new URLSearchParams();
+    data.append("clientId", clientID);
+    data.append("propertyId", propertyId);
+    data.append("date", formatDate(date));
+
+    setBookTour(!bookTour);
+
+    houseTourService.bookHouseTour(data)
+      .then(response => {
+        setMessage(response.message);
+        setTimeout(() => setMessage(""), 3000);
+      })
+  };
 
   return (
     <li>
@@ -71,8 +134,16 @@ const Property = ({ property, user, reflectChanges }) => {
           <button className="property-edit-btn" onClick={editHandler}><span className="icon edit"><i className="fa-solid fa-pen"></i></span><span className="icon-text">Modifier</span></button>
           <button className="property-delete-btn" ref={btnRef} onClick={deleteHandler}><span className="icon delete"><i className="fa-solid fa-trash"></i></span><span className="icon-text">Supprimer</span></button>
         </div>}
+        {user === 'Client' && <div>
+          <button className="property-book-tour-btn" onClick={showBookingFormHandler}><span className="icon tour"><i className="fa-solid fa-calendar-days"></i></span><span className="icon-text">Planifier un RDV pour la visite</span></button>
+        </div>}
       </div>
       {edit && <NewProperty user = {'Edit'} id = {propertyId} />}
+      {bookTour && <div className="property-tour-booking">
+        <h2 className="status-message success">Veuillez choisir la date :</h2>
+        <span><DatePicker className="calendar" selected={date} minDate={minDate} onChange={(date) => setDate(date)} showTimeSelect dateFormat="Pp" locale="fr" /></span>
+        <button className="new-property-form-btn" onClick={bookTourHandler}>Confirmer</button>
+      </div>}
     </li>
   );
 };

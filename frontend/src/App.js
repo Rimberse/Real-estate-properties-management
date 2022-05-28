@@ -19,6 +19,7 @@ const App = () => {
   // const [page, setPage] = useState(Number(1));
   // const lastPage = useRef(0);     // used to persist last page number for total number of properties between renders
   const [user, setUser] = useState('Guest');    // Used to grand the admin right to perform CUD operations
+  const [clientID, setClientID] = useState(0);  // Used to get clientID from DB, which is used later on when client books a property
 
   // // Runs once (upon first loading of webpage). Sets total number of real estate properties
   // // Used to get the rightmost value for pagination
@@ -67,11 +68,11 @@ const App = () => {
     <div className="App">
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/LoginUser" element={<LoginUser setRole={setUser} />} />
+        <Route path="/LoginUser" element={<LoginUser setRole={setUser} setID={setClientID} />} />
         <Route path="/LoginAdmin" element={<LoginAdmin setRole={setUser} />} />
         <Route path="/ForgotPassword" element={<ForgotPassword />} />
 
-        <Route path="/Properties" element={<Properties role={user} />} />
+        <Route path="/Properties" element={<Properties role={user} id={clientID} />} />
         <Route path="/HouseTours" element={<HouseTours />} />
 
         <Route path="*" element={<NotFound />} />

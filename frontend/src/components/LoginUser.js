@@ -6,7 +6,7 @@ import "../styles/LoginUser.css";
 import Axios from "axios"
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
-const LoginUser = ({ setRole }) => {
+const LoginUser = ({ setRole, setID }) => {
     const baseUrl = "http://localhost:5000/authentication";
     const [email_signup, setemail_signup] = useState('');
     const [password_signup, setpassword_signup] = useState('');
@@ -34,11 +34,12 @@ const LoginUser = ({ setRole }) => {
             .then((response) => {
                 if (response.data.message) {
                     alert(response.data.message);
-
-                    // if (response.data.message === 'User has been logged in') {
-                    //     setRole('Guest');
-                    //     setTimeout(() => navigate(fromWhere, { replace: true }), 2000);
-                    // }
+                    
+                    if (response.data.message === 'User has been logged in') {
+                        setRole('Client');
+                        setID(response.data.userID);
+                        setTimeout(() => navigate(fromWhere, { replace: true }), 2000);
+                    }
                 } else {
                     alert("Something went wrong... Please try later.");
                 }

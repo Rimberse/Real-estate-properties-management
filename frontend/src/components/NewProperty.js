@@ -137,7 +137,7 @@ const NewProperty = ({ user, id }) => {
             </div>
             <div className="new-property-form-column-item">
               <label htmlFor="date"><span className="icon"><i className="fa-solid fa-calendar-days"></i></span></label>
-              <DatePicker className="calendar" selected={date} onChange={(date) => setDate(date)/*setDate(date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds())*/} showTimeSelect dateFormat="Pp" locale="fr" />
+              <DatePicker className="calendar" selected={date} minDate={date} onChange={(date) => setDate(date)} showTimeSelect dateFormat="Pp" locale="fr" />
               <input name="date" id="date" type="hidden" defaultValue={formatDate(date)}>
               </input>
             </div>

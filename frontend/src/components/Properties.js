@@ -6,7 +6,7 @@ import propertyService from '../services/properties';
 import PageButton from "./PageButton";
 import Navbar from './Navbar';
 
-const Properties = ({ role }) => {
+const Properties = ({ role, id }) => {
     const [properties, setProperties] = useState([]);
     const [page, setPage] = useState(Number(1));
     const lastPage = useRef(0);     // used to persist last page number for total number of properties between renders
@@ -61,7 +61,7 @@ const Properties = ({ role }) => {
             <Navbar alternativeStyling={true} />
             <NewProperty user={user} />
             <ul>
-                {properties.map(property => <Property key={property.id} property={property} user={user} reflectChanges={refresh} />)}
+                {properties.map(property => <Property key={property.id} property={property} user={user} reflectChanges={refresh} clientID={id} />)}
             </ul>
             <div id="pagination-bar">
                 {(page > 2 && lastPage.current > 3) && <PageButton page={1} loadPage={() => setPage(1)} />}

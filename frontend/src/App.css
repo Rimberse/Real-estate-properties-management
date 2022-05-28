@@ -184,6 +184,21 @@ img {
   display: none;
 }
 
+.property-tour-booking {
+  display: flex;
+  flex-direction: column;
+  justify-items: space-between;
+  align-items: center;
+  padding: 17px;
+  width: 50%;
+  margin: 25px auto;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+}
+
+.property-tour-booking .new-property-form-btn {
+  position: relative;
+}
+
 /* Submit button styling */
 .new-property-form-btn {
   background-color: var(--main-success-button-color);     /* #13aa52 */
@@ -305,7 +320,7 @@ img {
 /* End of button style */
 
 /* Property info edit, delete button */
-.property-edit-btn, .property-delete-btn {
+.property-edit-btn, .property-delete-btn, .property-book-tour-btn {
   background-color: initial;
   border-radius: 2.5px;
   border-style: none;
@@ -327,7 +342,11 @@ img {
   width: 160px;
 }
 
-.property-edit-btn:hover, .property-delete-btn:hover {
+.property-book-tour-btn {
+  width: 300px;
+}
+
+.property-edit-btn:hover, .property-delete-btn:hover, .property-book-tour-btn:hover {
   opacity: .7;
 }
 
@@ -337,6 +356,10 @@ img {
 
 .property-delete-btn {
   background-image: linear-gradient(#C3073F 0, #950740 100%);
+}
+
+.property-book-tour-btn {
+  background-image: linear-gradient(#44318D 0, #2A1B3D 100%);
 }
 
 .icon.edit, .icon.delete {

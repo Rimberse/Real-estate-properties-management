@@ -21,10 +21,10 @@ const LoginAdmin = ({ setRole }) => {
                 if (response.data.message) {
                     alert(response.data.message);
 
-                    // if (response.data.message === 'Admin has been logged successfully') {
-                    //     setRole('Admin');
-                    //     setTimeout(() => navigate(fromWhere, { replace: true }), 2000);
-                    // }
+                    if (response.data.message === 'Admin has been logged successfully') {
+                        setRole('Admin');
+                        setTimeout(() => navigate(fromWhere, { replace: true }), 2000);
+                    }
                 } else {
                     alert("Something went wrong... Please try later.");
                 }
