@@ -100,7 +100,7 @@ const Property = ({ property, user, reflectChanges, clientID }) => {
   };
 
   return (
-    <li>
+    <>
       {(message !== '') && <h2 className="status-message success">{message}</h2>}
       <div className="property-card">
         <div className="property">
@@ -144,7 +144,7 @@ const Property = ({ property, user, reflectChanges, clientID }) => {
         <span><DatePicker className="calendar" selected={date} minDate={minDate} onChange={(date) => setDate(date)} showTimeSelect dateFormat="Pp" locale="fr" /></span>
         <button className="new-property-form-btn" onClick={bookTourHandler}>Confirmer</button>
       </div>}
-    </li>
+    </>
   );
 };
 

@@ -61,7 +61,7 @@ const Properties = ({ role, id }) => {
             <Navbar alternativeStyling={true} />
             <NewProperty user={user} />
             <ul>
-                {properties.map(property => <Property key={property.id} property={property} user={user} reflectChanges={refresh} clientID={id} />)}
+                {properties.map(property => <li key={property.id}><Property property={property} user={user} reflectChanges={refresh} clientID={id} /></li>)}
             </ul>
             <div id="pagination-bar">
                 {(page > 2 && lastPage.current > 3) && <PageButton page={1} loadPage={() => setPage(1)} />}

@@ -73,7 +73,7 @@ const App = () => {
         <Route path="/ForgotPassword" element={<ForgotPassword />} />
 
         <Route path="/Properties" element={<Properties role={user} id={clientID} />} />
-        <Route path="/HouseTours" element={<HouseTours />} />
+        <Route path="/HouseTours" element={<HouseTours role={user} />} />
 
         <Route path="*" element={<NotFound />} />
       </Routes>
