@@ -18,10 +18,6 @@ const getAdmin = async (Id_Admin, password) => {
     message = "Access denied";
   }
 
-  console.log({
-    message,
-  });
-
   return {
     message,
   };

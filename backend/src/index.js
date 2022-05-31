@@ -11,6 +11,7 @@ require("dotenv").config({ path: "../.env" });
 const properties = require("./services/properties");
 const authentication = require("./services/authentication");
 const tours = require("./services/tours");
+const transactions = require("./services/transactions");
 
 // Logging requests
 const requestLogger = (request, response, next) => {
@@ -29,48 +30,6 @@ app.use((error, request, response, next) => {
   response.status(statusCode).json({ message: error.message });
   return;
 });
-
-const realProperties = [
-  {
-    id: 1,
-    address: "123 rue de Machin, Villejuif",
-    owner: "Jessy VY",
-    type: "Maison",
-    bedrooms: 5,
-    surface: "110 m2",
-    state: "neuf",
-    price: 399000,
-    availabilityDate: new Date("07/15/2022").toDateString(),
-    city: "Villejuif",
-    parkingLots: 2,
-  },
-  {
-    id: 2,
-    address: "457 boulevard de Bidul, Paris 75016",
-    owner: "Meryem KOSE",
-    type: "Appartement",
-    bedrooms: 3,
-    surface: "80 m2",
-    state: "neuf",
-    price: 599000,
-    availabilityDate: new Date("09/22/2022").toDateString(),
-    city: "Paris 16eme",
-    parkingLots: 1,
-  },
-  {
-    id: 3,
-    address: "987 avenue de tristesse, Rouen",
-    owner: "Ratiba KADI",
-    type: "Maison",
-    bedrooms: 8,
-    surface: "180 m2",
-    state: "Bon etat",
-    price: 250000,
-    availabilityDate: new Date().toDateString(),
-    city: "Rouen",
-    parkingLots: 2,
-  },
-];
 
 // POST admin credentials. Used to verify admin's access rights
 app.post("/authentication/adminLogin", async (req, res, next) => {
@@ -231,6 +190,26 @@ app.post("/api/houseTours", async (request, response, next) => {
     response.json(await tours.create(request.body));
   } catch (error) {
     console.error(`Error while creating a house tour `, error.message);
+    next(error);
+  }
+});
+
+// GET all transactions. Used to retrieve all transactions (real estate properties bought by clients)
+app.get("/api/transactions", async (request, response, next) => {
+  try {
+    response.json(await transactions.getMultiple(request.query.page));
+  } catch (error) {
+    console.error(`Error while getting transactions `, error.message);
+    next(error);
+  }
+});
+
+// POST a transaction. Used to keep record of the properties bought by respective clients
+app.post("/api/transactions", async (request, response, next) => {
+  try {
+    response.json(await transactions.create(request.body));
+  } catch (error) {
+    console.error(`Error while creating a transaction `, error.message);
     next(error);
   }
 });
