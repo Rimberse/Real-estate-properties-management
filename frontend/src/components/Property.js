@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import propertyService from '../services/properties';
 import houseTourService from '../services/houseTours';
+import transactionService from '../services/transactions';
 import NewProperty from './NewProperty';
 import DatePicker, { registerLocale, setDefaultLocale } from "react-datepicker";
 import fr from 'date-fns/locale/fr';
@@ -10,6 +11,7 @@ const Property = ({ property, user, reflectChanges, clientID }) => {
   const [propertyId, setPropertyId] = useState(property.id);
   const [message, setMessage] = useState('');
   const [bookTour, setBookTour] = useState(false);
+  const [transactionFees, setTransactionFees] = useState(false);
   const [date, setDate] = useState(new Date());
   const [minDate, setMinDate] = useState(new Date());
   const btnRef = useRef();
@@ -99,6 +101,35 @@ const Property = ({ property, user, reflectChanges, clientID }) => {
       })
   };
 
+  const showTransactionPopupHandler = () => {
+    setTransactionFees(!transactionFees);
+  }
+
+  const showTransactionHandler = () => {
+    setPropertyId(property.id);
+
+    if (!property.prix || !property.taux || !propertyId || !clientID) {
+      setMessage("Veuillez remplir les champs correctement !");
+      setTimeout(() => setMessage(""), 3000);
+      return;
+    }
+
+    const data = {
+      prix: property.prix,
+      propertyId: propertyId,
+      clientId: clientID,
+      commission: Math.round((1000 + (property.prix * property.taux)) * 100) / 100
+    }
+
+    setTransactionFees(!transactionFees);
+
+    transactionService.makeTransaction(data)
+      .then(response => {
+        setMessage(response.message);
+        setTimeout(() => setMessage(""), 3000);
+      })
+  };
+
   return (
     <>
       {(message !== '') && <h2 className="status-message success">{message}</h2>}
@@ -135,10 +166,22 @@ const Property = ({ property, user, reflectChanges, clientID }) => {
           <button className="property-delete-btn" ref={btnRef} onClick={deleteHandler}><span className="icon delete"><i className="fa-solid fa-trash"></i></span><span className="icon-text">Supprimer</span></button>
         </div>}
         {user === 'Client' && <div>
+          <button className="property-transaction-btn" onClick={showTransactionPopupHandler}><span className="icon transaction"><i className="fa-solid fa-money-check-dollar"></i></span><span className="icon-text">Faire une proposition</span></button>
           <button className="property-book-tour-btn" onClick={showBookingFormHandler}><span className="icon tour"><i className="fa-solid fa-calendar-days"></i></span><span className="icon-text">Planifier un RDV pour la visite</span></button>
         </div>}
       </div>
       {edit && <NewProperty user = {'Edit'} id = {propertyId} />}
+      {transactionFees && <div className="property-transaction-fees">
+        <div className="property-transaction-fees-header">
+          <span className="property-transaction-fees-header-price">Prix</span>
+          <span className="property-transaction-fees-header-fees">Commission</span>
+        </div>
+        <div className="property-transaction-fees-details">
+          <span className="property-transaction-fees-details-price">{formatter.format(property.prix)}</span>
+          <span className="property-transaction-fees-details-fees">{formatter.format(1000 + (property.prix * property.taux))}</span>
+        </div>
+        <button className="new-transaction-btn" onClick={showTransactionHandler}>Faire l'offre d'achat</button>
+      </div>}
       {bookTour && <div className="property-tour-booking">
         <h2 className="status-message success">Veuillez choisir la date :</h2>
         <span><DatePicker className="calendar" selected={date} minDate={minDate} onChange={(date) => setDate(date)} showTimeSelect dateFormat="Pp" locale="fr" /></span>

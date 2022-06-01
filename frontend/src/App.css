@@ -2,6 +2,7 @@
 :root {
   --main-page-fill-color: #2F2FA2;
   --main-page-font-color: #553D67;
+  --main-page-header-color: #222629;
   --main-icon-color: #242582;
   --main-success-button-color: #14A76C;
   --main-error-button-color: #FC4445;
@@ -320,7 +321,7 @@ img {
 /* End of button style */
 
 /* Property info edit, delete button */
-.property-edit-btn, .property-delete-btn, .property-book-tour-btn {
+.property-edit-btn, .property-delete-btn, .property-book-tour-btn, .property-transaction-btn {
   background-color: initial;
   border-radius: 2.5px;
   border-style: none;
@@ -342,11 +343,15 @@ img {
   width: 160px;
 }
 
+.property-transaction-btn {
+  width: 250px;
+}
+
 .property-book-tour-btn {
   width: 300px;
 }
 
-.property-edit-btn:hover, .property-delete-btn:hover, .property-book-tour-btn:hover {
+.property-edit-btn:hover, .property-delete-btn:hover, .property-book-tour-btn:hover, .property-transaction-btn:hover {
   opacity: .7;
 }
 
@@ -359,10 +364,14 @@ img {
 }
 
 .property-book-tour-btn {
-  background-image: linear-gradient(#44318D 0, #2A1B3D 100%);
+  background-image: linear-gradient(#3AAFA9 0, #2B7A78 100%);
 }
 
-.icon.edit, .icon.delete {
+.property-transaction-btn {
+  background-image: linear-gradient(#464866 0, #25274D 100%);
+}
+
+.icon.edit, .icon.delete, .icon.tour, .icon.transaction {
   color: #fff;
 }
 /* End of property edit, delete button styling */
@@ -471,6 +480,7 @@ img {
 }
 /* End of styling for add new property button */
 
+/* House tours */
 .house-tour-card {
   display: flex;
   justify-content: center;
@@ -509,3 +519,101 @@ img {
   font-size: 38px;
   font-weight: 900;
 }
+/* House Tours */
+
+/* Transactions */
+.property-transaction-fees {
+  margin: 25px auto;
+  width: 325px;
+  height: 125px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+}
+
+.property-transaction-fees-header, .property-transaction-fees-details {
+  display: flex;
+  align-items: center;
+  height: 50%;
+}
+
+.property-transaction-fees-header {
+  color: #fff;
+  background-color: var(--main-page-header-color);
+}
+
+.property-transaction-fees-header-price, .property-transaction-fees-header-fees, .property-transaction-fees-details-price, .property-transaction-fees-details-fees {
+  display: inline-block;
+  width: 50%;
+  text-align: center;
+}
+
+.property-transaction-fees-header-price, .property-transaction-fees-header-fees {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.property-transaction-fees-details-price, .property-transaction-fees-details-fees {
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.new-transaction-btn {
+  align-items: center;
+  appearance: none;
+  border-radius: 4px;
+  border-style: none;
+  box-shadow: rgba(0, 0, 0, .2) 0 3px 1px -2px,rgba(0, 0, 0, .14) 0 2px 2px 0,rgba(0, 0, 0, .12) 0 1px 5px 0;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: .775rem;
+  font-weight: 500;
+  height: 36px;
+  justify-content: center;
+  letter-spacing: .0892857em;
+  line-height: normal;
+  min-width: 64px;
+  outline: none;
+  overflow: visible;
+  padding: 16px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: box-shadow 280ms cubic-bezier(.4, 0, .2, 1);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: middle;
+  will-change: transform,opacity;
+  width: 60%;
+  margin: 0 auto;
+  margin-top: 10px;
+}
+
+.new-transaction-btn:hover {
+  box-shadow: rgba(0, 0, 0, .2) 0 2px 4px -1px, rgba(0, 0, 0, .14) 0 4px 5px 0, rgba(0, 0, 0, .12) 0 1px 10px 0;
+}
+
+.new-transaction-btn:disabled {
+  background-color: rgba(0, 0, 0, .12);
+  box-shadow: rgba(0, 0, 0, .2) 0 0 0 0, rgba(0, 0, 0, .14) 0 0 0 0, rgba(0, 0, 0, .12) 0 0 0 0;
+  color: rgba(0, 0, 0, .37);
+  cursor: default;
+  pointer-events: none;
+}
+
+.new-transaction-btn:not(:disabled) {
+  background-color: var(--main-page-header-color);
+}
+
+.new-transaction-btn:focus {
+  box-shadow: rgba(0, 0, 0, .2) 0 2px 4px -1px, rgba(0, 0, 0, .14) 0 4px 5px 0, rgba(0, 0, 0, .12) 0 1px 10px 0;
+}
+
+.new-transaction-btn:active {
+  box-shadow: rgba(0, 0, 0, .2) 0 5px 5px -3px, rgba(0, 0, 0, .14) 0 8px 10px 1px, rgba(0, 0, 0, .12) 0 3px 14px 2px;
+}
+/* Transactions */

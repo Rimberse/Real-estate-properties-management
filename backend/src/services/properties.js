@@ -14,7 +14,7 @@ const getMultiple = async (page = 1) => {
     const offset = helper.getOffset(page, config.listPerPage);
     // returns listPerPage number of records after the offset. For example : LIMIT 5, 10 will return records from 6 to 15
     const rows = await db.query(
-        `SELECT id, adresse, proprietaire, type, nbPieces, superficie, etat, prix, date, ville, nbGarages, image 
+        `SELECT id, adresse, proprietaire, type, nbPieces, superficie, etat, prix, date, ville, nbGarages, image, taux 
         FROM properties LIMIT ${offset}, ${config.listPerPage}`
     );
 
