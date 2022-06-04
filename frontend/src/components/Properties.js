@@ -5,6 +5,7 @@ import NewProperty from './NewProperty';
 import propertyService from '../services/properties';
 import PageButton from "./PageButton";
 import Navbar from './Navbar';
+import Footer from './Footer';
 
 const Properties = ({ role, id }) => {
     const [properties, setProperties] = useState([]);
@@ -72,6 +73,7 @@ const Properties = ({ role, id }) => {
                 {(lastPage.current > 3 && (page + 2) < lastPage.current) && <PageButton page={'...'} />}
                 {(lastPage.current > 2 && page < lastPage.current) && <PageButton page={lastPage.current} loadPage={() => setPage(lastPage.current)} />}
             </div>
+            <Footer />
         </div>
     )
 }

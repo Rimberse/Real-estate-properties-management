@@ -3,6 +3,7 @@ import houseTourService from '../services/houseTours';
 import PageButton from "./PageButton";
 import Property from './Property';
 import Navbar from './Navbar';
+import Footer from './Footer';
 import { BiTime } from 'react-icons/bi';
 import { BsFillCalendarDateFill, BsPersonCircle } from 'react-icons/bs';
 import { HiOutlineMail } from 'react-icons/hi';
@@ -43,7 +44,7 @@ const HouseTours = ({ role }) => {
     property.date = houseTour.date_disponibilite;
     return property;
   }
-  
+
   return (
     <div className="house-tour">
       <Navbar alternativeStyling={true} />
@@ -77,6 +78,7 @@ const HouseTours = ({ role }) => {
         </>
         : <div className="house-tour-no-rights">You Don't have Authorization to View this Page<br></br>Please Log In</div>
       }
+      <Footer />
     </div>
   )
 }

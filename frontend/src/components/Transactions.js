@@ -3,6 +3,7 @@ import transactionService from '../services/transactions';
 import PageButton from "./PageButton";
 import Property from './Property';
 import Navbar from './Navbar';
+import Footer from './Footer';
 import { BiTime } from 'react-icons/bi';
 import { BsFillCalendarDateFill, BsPersonCircle, BsPercent } from 'react-icons/bs';
 import { HiOutlineMail } from 'react-icons/hi';
@@ -93,6 +94,7 @@ const Transactions = ({ role }) => {
         </>
         : <div className="transactions-no-rights">You Don't have Authorization to View this Page<br></br>Please Log In</div>
       }
+      <Footer />
     </div>
   )
 }
