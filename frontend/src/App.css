@@ -513,7 +513,7 @@ img {
   font-weight: 600;
 }
 
-.house-tour-no-rights {
+.house-tour-no-rights, .transactions-no-rights {
   text-align: center;
   color: var(--main-page-font-color);
   font-size: 38px;
@@ -615,5 +615,43 @@ img {
 
 .new-transaction-btn:active {
   box-shadow: rgba(0, 0, 0, .2) 0 5px 5px -3px, rgba(0, 0, 0, .14) 0 8px 10px 1px, rgba(0, 0, 0, .12) 0 3px 14px 2px;
+}
+
+.transactions-card-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 1000px;
+  margin: 0 auto;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+}
+
+.transactions-card-bottom-transaction, .transactions-card-bottom-client {
+  width: 50%;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.transactions-card-bottom-transaction-container, .transactions-card-bottom-client-info-container {
+  text-transform: initial;
+  padding: 20px 75px;
+}
+
+.transactions-card-bottom-transaction p, .transactions-card-bottom-client-info p {
+  color: var(--main-page-header-color);
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.transactions-card-bottom-transaction-header, .transactions-card-bottom-client-info-header {
+  display: inline-block;
+  text-align: center;
+  width: 100%;
+  height: 50%;
+  font-size: 22px;
+  font-weight: 700;
+  padding: 12px;
+  color: #fff;
+  background-color: var(--main-page-header-color);
 }
 /* Transactions */

@@ -105,7 +105,7 @@ const Property = ({ property, user, reflectChanges, clientID }) => {
     setTransactionFees(!transactionFees);
   }
 
-  const showTransactionHandler = () => {
+  const transactionHandler = () => {
     setPropertyId(property.id);
 
     if (!property.prix || !property.taux || !propertyId || !clientID) {
@@ -118,7 +118,8 @@ const Property = ({ property, user, reflectChanges, clientID }) => {
       prix: property.prix,
       propertyId: propertyId,
       clientId: clientID,
-      commission: Math.round((1000 + (property.prix * property.taux)) * 100) / 100
+      commission: Math.round((1000 + (property.prix * property.taux)) * 100) / 100,
+      date: formatDate(new Date())
     }
 
     setTransactionFees(!transactionFees);
@@ -180,7 +181,7 @@ const Property = ({ property, user, reflectChanges, clientID }) => {
           <span className="property-transaction-fees-details-price">{formatter.format(property.prix)}</span>
           <span className="property-transaction-fees-details-fees">{formatter.format(1000 + (property.prix * property.taux))}</span>
         </div>
-        <button className="new-transaction-btn" onClick={showTransactionHandler}>Faire l'offre d'achat</button>
+        <button className="new-transaction-btn" onClick={transactionHandler}>Faire l'offre d'achat</button>
       </div>}
       {bookTour && <div className="property-tour-booking">
         <h2 className="status-message success">Veuillez choisir la date :</h2>

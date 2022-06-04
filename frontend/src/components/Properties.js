@@ -18,7 +18,6 @@ const Properties = ({ role, id }) => {
         propertyService
             .getCount()
             .then(nbProperties => lastPage.current = Math.ceil(nbProperties.count / 10));
-        console.log(role);
         setUser(role);
     }, []);
 

@@ -15,6 +15,11 @@ const Navbar = ({ alternativeStyling }) => {
     navigate(fromWhere, { replace: true });
   }
 
+  const navigateToTransactions = () => {
+    const fromWhere = location.state?.fromWhere?.pathname || "/Transactions";
+    navigate(fromWhere, { replace: true });
+  }
+
   return (
     <div className={(alternativeStyling) ? "header" : "header fixed"}>
         <h1><a href="/" className={(alternativeStyling) ? "link alternative" : "link"}>ReSTATE.</a></h1>
@@ -30,6 +35,9 @@ const Navbar = ({ alternativeStyling }) => {
         </li>
         <li>
         <a href="#" onClick={navigateToHouseTours} className={(alternativeStyling) ? "link alternative" : "link"}>Visites</a>        
+        </li>
+        <li>
+        <a href="#" onClick={navigateToTransactions} className={(alternativeStyling) ? "link alternative" : "link"}>Transactions</a>        
         </li>
       </ul>
       <div className="icons" onClick={handleClick}>

@@ -43,9 +43,7 @@ const HouseTours = ({ role }) => {
     property.date = houseTour.date_disponibilite;
     return property;
   }
-
-  console.log(role);
-
+  
   return (
     <div className="house-tour">
       <Navbar alternativeStyling={true} />
